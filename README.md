@@ -1,2 +1,4 @@
-# lms
-Learning Management System (Pet Project)
+# Pet Project (lms)
+
+### Description
+Learning Management System
