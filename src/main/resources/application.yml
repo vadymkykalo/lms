@@ -1,6 +1,12 @@
 spring:
   application:
     name: lms
+  profiles:
+    active: dev
+  security:
+    user:
+      name: lms
+      password: 82580bab-c552-4946-b017-43a6f072e265
 
   datasource:
     url: jdbc:postgresql://lms_postgres:5432/lmstest
@@ -8,6 +14,7 @@ spring:
     password: lmsroot
 
   jpa:
+    open-in-view: false
     show-sql: true
     hibernate:
       ddl-auto: none
