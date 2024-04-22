@@ -18,3 +18,6 @@ build:
 
 ps:
 	docker-compose ps
+
+create-network:
+	docker network create lms_network

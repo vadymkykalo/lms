@@ -3,7 +3,7 @@ spring:
     name: lms
 
   datasource:
-    url: jdbc:postgresql://localhost:5444/lmstest
+    url: jdbc:postgresql://lms_postgres:5432/lmstest
     username: lmsuser
     password: lmsroot
 

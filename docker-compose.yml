@@ -12,12 +12,15 @@ services:
       - POSTGRES_PASSWORD=lmsroot
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    networks:
-      - lms_network
+
+  redis:
+    image: redis:6.2-alpine
+    container_name: lms_redis
 
 networks:
-  lms_network:
-    driver: bridge
+  default:
+    external: true
+    name: lms_network
 
 volumes:
   postgres_data:
