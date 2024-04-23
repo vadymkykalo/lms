@@ -1,6 +1,6 @@
 package com.vadymkykalo.lms.controller.advice;
 
-import com.vadymkykalo.lms.dto.ApiResponse;
+import com.vadymkykalo.lms.exception.ResourceNotFoundException;
 import lombok.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,33 +15,32 @@ import java.util.Arrays;
 @RestControllerAdvice
 public class CustomExceptionHandler {
 
+    @ExceptionHandler(ResourceNotFoundException.class)
+     public ResponseEntity<String> handleResourceNotFoundException(ResourceNotFoundException ex) {
+         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+     }
+
     @ExceptionHandler(NoHandlerFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ResponseEntity<ApiResponse<String>> handleNotFound(Exception ex) {
-        ApiResponse<String> response = new ApiResponse<>(
-                false,
-                null,
-                "The requested endpoint was not found."
+    public ResponseEntity<ErrorResponse> handleNotFound(Exception ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ErrorResponse.builder()
+                .status(HttpStatus.NOT_FOUND.value())
+                .message(ex.getMessage())
+                .timestamp(System.currentTimeMillis())
+                .debugMessage(Arrays.toString(ex.getStackTrace()))
+                .build()
         );
-
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ApiResponse> handleAllExceptions(Exception ex, WebRequest request) {
-        ApiResponse<ErrorResponse> response = new ApiResponse<>();
-        response.setSuccess(false);
-
-        response.setData(ErrorResponse.builder()
-                        .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
-                        .message(ex.getMessage())
-                        .timestamp(System.currentTimeMillis())
-                        .debugMessage(Arrays.toString(ex.getStackTrace()))
-                        .build());
-
-        response.setMessage(ex.getMessage());
-
-        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+    public ResponseEntity<ErrorResponse> handleAllExceptions(Exception ex, WebRequest request) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ErrorResponse.builder()
+                .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                .message(ex.getMessage())
+                .timestamp(System.currentTimeMillis())
+                .debugMessage(Arrays.toString(ex.getStackTrace()))
+                .build()
+        );
     }
 
     @Getter
@@ -49,7 +48,7 @@ public class CustomExceptionHandler {
     @AllArgsConstructor
     @NoArgsConstructor
     @Builder
-    static class ErrorResponse {
+    public static class ErrorResponse {
         private int status;
         private String message;
         private long timestamp;

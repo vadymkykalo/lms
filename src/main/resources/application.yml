@@ -29,3 +29,7 @@ spring:
 
   jackson:
     time-zone: Europe/Kiev
+
+rsa:
+  private-key: classpath:certs/private.pem
+  public-key: classpath:certs/public.pem
