@@ -25,10 +25,10 @@
             </column>
             <column name="is_enabled" type="boolean" defaultValueBoolean="true"/>
 
-            <column name="created_at" type="timestamp with time zone">
+            <column name="created_at" type="TIMESTAMP WITH TIME ZONE" defaultValueComputed="now()">
                 <constraints nullable="false"/>
             </column>
-            <column name="updated_at" type="timestamp with time zone">
+            <column name="updated_at" type="TIMESTAMP WITH TIME ZONE">
                 <constraints nullable="true"/>
             </column>
         </createTable>
@@ -40,10 +40,10 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="name" type="varchar(20)" />
-            <column name="created_at" type="timestamp with time zone">
+            <column name="created_at" type="TIMESTAMP WITH TIME ZONE" defaultValueComputed="now()">
                 <constraints nullable="false"/>
             </column>
-            <column name="updated_at" type="timestamp with time zone">
+            <column name="updated_at" type="TIMESTAMP WITH TIME ZONE">
                 <constraints nullable="true"/>
             </column>
         </createTable>
@@ -55,10 +55,10 @@
             <column name="role_id" type="bigint">
                 <constraints nullable="false" />
             </column>
-            <column name="created_at" type="timestamp with time zone">
+            <column name="created_at" type="TIMESTAMP WITH TIME ZONE" defaultValueComputed="now()">
                 <constraints nullable="false"/>
             </column>
-            <column name="updated_at" type="timestamp with time zone">
+            <column name="updated_at" type="TIMESTAMP WITH TIME ZONE">
                 <constraints nullable="true"/>
             </column>
         </createTable>

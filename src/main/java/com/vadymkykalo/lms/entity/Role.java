@@ -25,8 +25,10 @@ public class Role {
     private ERole name;
 
     @CreatedDate
+    @Column(name = "created_at", nullable = false, updatable = false)
     private ZonedDateTime createdAt;
 
     @LastModifiedDate
+    @Column(name = "updated_at", insertable = false)
     private ZonedDateTime updatedAt;
 }

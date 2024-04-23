@@ -21,8 +21,8 @@ import java.util.*;
 @ToString(onlyExplicitlyIncluded = true)
 @RequiredArgsConstructor
 @Table(name = "users")
-@EntityListeners(AuditingEntityListener.class)
 @AllArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class User implements UserDetails {
 
     @Id
@@ -54,9 +54,11 @@ public class User implements UserDetails {
     private String passwordDigest;
 
     @CreatedDate
+    @Column(name = "created_at", nullable = false, updatable = false)
     private ZonedDateTime createdAt;
 
     @LastModifiedDate
+    @Column(name = "updated_at", insertable = false)
     private ZonedDateTime updatedAt;
 
     @Override

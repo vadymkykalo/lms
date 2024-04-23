@@ -67,6 +67,7 @@ public class UserController {
                 .firstName(userData.getFirstName())
                 .email(userData.getEmail())
                 .passwordDigest(passwordEncoder.encode(userData.getPassword()))
+                .isEnabled(true)
                 .build();
 
         User updateUser = repository.saveAndFlush(user);
@@ -77,7 +78,6 @@ public class UserController {
                 .password(updateUser.getPassword())
                 .firstName(updateUser.getFirstName())
                 .lastName(updateUser.getLastName())
-                .password(updateUser.getPassword())
                 .isEnabled(updateUser.isEnabled())
                 .build();
     }
@@ -98,7 +98,6 @@ public class UserController {
                 .password(updateUser.getPassword())
                 .firstName(updateUser.getFirstName())
                 .lastName(updateUser.getLastName())
-                .password(updateUser.getPassword())
                 .isEnabled(updateUser.isEnabled())
                 .build();
     }
