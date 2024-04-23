@@ -23,9 +23,4 @@ public class UserUtils {
 
         return userRepository.findByEmail(authentication.getName()).orElse(null);
     }
-
-    public User getTestUser() {
-        return userRepository.findByEmail("vkykalo@example.com")
-                .orElseThrow(() -> new RuntimeException("User doesn't exist"));
-    }
 }

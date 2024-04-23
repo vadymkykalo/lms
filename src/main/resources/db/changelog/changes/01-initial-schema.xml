@@ -6,7 +6,7 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
-    <changeSet id="1" author="vkykalo">
+    <changeSet id="create_users_table" author="vkykalo">
         <createTable tableName="users">
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
@@ -34,7 +34,7 @@
         </createTable>
     </changeSet>
 
-    <changeSet id="2" author="vkykalo">
+    <changeSet id="create_roles_and_user_roles_tables" author="vkykalo">
         <createTable tableName="roles">
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
@@ -74,23 +74,34 @@
                                  referencedTableName="roles" referencedColumnNames="id"/>
     </changeSet>
 
-    <changeSet id="3" author="vkykalo">
-        <addColumn tableName="users">
-            <column name="role_id" type="bigint">
-                <constraints nullable="true" foreignKeyName="fk_users_roles"
-                             references="roles(id)"/>
-            </column>
-        </addColumn>
-    </changeSet>
-
-    <changeSet id="4" author="vkykalo">
+    <changeSet id="add_rows_roles" author="vkykalo">
         <insert tableName="roles">
-            <column name="name" value="ROLE_USER"/>
+            <column name="id" valueNumeric="1"/>
+            <column name="name" value="ADMIN"/>
             <column name="created_at" valueComputed="CURRENT_TIMESTAMP"/>
         </insert>
         <insert tableName="roles">
-            <column name="name" value="ROLE_ADMIN"/>
+            <column name="id" valueNumeric="2"/>
+            <column name="name" value="USER"/>
             <column name="created_at" valueComputed="CURRENT_TIMESTAMP"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="add_test_user_admin" author="vkykalo">
+        <!-- create admin -->
+        <insert tableName="users">
+            <column name="first_name" value="admin"/>
+            <column name="last_name" value="admin"/>
+            <column name="email" value="admin@example.com"/>
+            <!-- password test123 -->
+            <column name="password_digest" valueComputed="'$2a$10$MgwNTchUSyeazhgUIPbKje.KizXPf8K8F5BpsykX0mRdZ61EqxJqe'"/>
+            <column name="is_enabled" valueBoolean="true"/>
+            <column name="created_at" valueComputed="CURRENT_TIMESTAMP"/>
+        </insert>
+        <!-- assign role admin -->
+        <insert tableName="user_roles">
+            <column name="user_id" valueNumeric="(SELECT id FROM users WHERE email = 'admin@example.com')"/>
+            <column name="role_id" valueNumeric="1"/>
         </insert>
     </changeSet>
 

@@ -1,7 +1,9 @@
 package com.vadymkykalo.lms.controller.api;
 
+import com.vadymkykalo.lms.component.CustomUsrDetails;
 import com.vadymkykalo.lms.dto.AuthRequest;
-import com.vadymkykalo.lms.util.JWTUtils;
+import com.vadymkykalo.lms.service.CustomUsrDetailsService;
+import com.vadymkykalo.lms.service.TokenService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -14,8 +16,9 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api")
 public class AuthenticationController {
 
-    private final JWTUtils jwtUtils;
-    private final AuthenticationManager authenticationManager;
+    private final TokenService tokenService;
+    private final AuthenticationManager authManager;
+    private final CustomUsrDetailsService customUsrDetailsService;
 
     @PostMapping("/login")
     @ResponseStatus(HttpStatus.OK)
@@ -26,8 +29,10 @@ public class AuthenticationController {
                 authRequest.getPassword()
         );
 
-        authenticationManager.authenticate(authentication);
+        authManager.authenticate(authentication);
 
-        return jwtUtils.generateToken(authRequest.getUsername());
+        CustomUsrDetails user = (CustomUsrDetails) customUsrDetailsService.loadUserByUsername(authRequest.getUsername());
+
+        return tokenService.generateAccessToken(user);
     }
 }

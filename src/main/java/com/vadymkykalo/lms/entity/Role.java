@@ -16,13 +16,18 @@ import java.time.ZonedDateTime;
 @EntityListeners(AuditingEntityListener.class)
 public class Role {
 
+    public enum RoleName {
+        USER,
+        ADMIN
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Enumerated(EnumType.STRING)
     @Column(length = 20)
-    private ERole name;
+    private RoleName name;
 
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)
