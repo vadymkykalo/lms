@@ -1,7 +1,9 @@
 package com.vadymkykalo.lms.service;
 
 import com.nimbusds.jwt.SignedJWT;
-import com.vadymkykalo.lms.component.CustomUsrDetails;
+import com.vadymkykalo.lms.component.CustomUserDetails;
+import jakarta.validation.constraints.NotNull;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
@@ -12,6 +14,7 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.stream.Collectors;
 
+@Slf4j
 public class TokenService  {
 
     private final JwtEncoder jwtEncoder;
@@ -20,7 +23,7 @@ public class TokenService  {
         this.jwtEncoder = jwtEncoder;
     }
 
-    public String generateAccessToken(CustomUsrDetails usrDetails) {
+    public String generateAccessToken(@NotNull CustomUserDetails usrDetails) {
         Instant now = Instant.now();
         String scope = usrDetails.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
@@ -37,12 +40,12 @@ public class TokenService  {
         return jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
     }
 
-    public String parseToken(String token) {
+    public String parseToken(@NotNull String token) {
         try {
             SignedJWT decodedJWT = SignedJWT.parse(token);
             return decodedJWT.getJWTClaimsSet().getSubject();
         } catch (ParseException e) {
-            e.printStackTrace();
+            log.error("Error parsing token", e);
         }
         return null;
     }

@@ -1,6 +1,6 @@
 package com.vadymkykalo.lms.service;
 
-import com.vadymkykalo.lms.component.CustomUsrDetails;
+import com.vadymkykalo.lms.component.CustomUserDetails;
 import com.vadymkykalo.lms.entity.User;
 
 import com.vadymkykalo.lms.repository.UserRepository;
@@ -20,6 +20,6 @@ public class CustomUsrDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user= userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-        return new CustomUsrDetails(user);
+        return new CustomUserDetails(user);
     }
 }

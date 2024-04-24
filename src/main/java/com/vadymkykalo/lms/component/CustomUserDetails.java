@@ -12,13 +12,13 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-public class CustomUsrDetails implements UserDetails {
+public class CustomUserDetails implements UserDetails {
 
     @Serial
     private static final long serialVersionUID = 1L;
     private final User user;
 
-    public CustomUsrDetails(User user) {
+    public CustomUserDetails(User user) {
         this.user = user;
     }
 
@@ -59,6 +59,6 @@ public class CustomUsrDetails implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return this.user.isEnabled();
     }
 }

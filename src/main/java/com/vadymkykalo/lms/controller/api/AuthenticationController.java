@@ -1,6 +1,6 @@
 package com.vadymkykalo.lms.controller.api;
 
-import com.vadymkykalo.lms.component.CustomUsrDetails;
+import com.vadymkykalo.lms.component.CustomUserDetails;
 import com.vadymkykalo.lms.dto.AuthRequest;
 import com.vadymkykalo.lms.service.CustomUsrDetailsService;
 import com.vadymkykalo.lms.service.TokenService;
@@ -31,7 +31,7 @@ public class AuthenticationController {
 
         authManager.authenticate(authentication);
 
-        CustomUsrDetails user = (CustomUsrDetails) customUsrDetailsService.loadUserByUsername(authRequest.getUsername());
+        CustomUserDetails user = (CustomUserDetails) customUsrDetailsService.loadUserByUsername(authRequest.getUsername());
 
         return tokenService.generateAccessToken(user);
     }
