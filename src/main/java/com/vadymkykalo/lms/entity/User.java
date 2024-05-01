@@ -15,7 +15,7 @@ import java.util.*;
 @Getter
 @Setter
 @Builder
-@ToString(onlyExplicitlyIncluded = true)
+@ToString
 @RequiredArgsConstructor
 @Table(name = "users")
 @AllArgsConstructor
@@ -24,18 +24,18 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @ToString.Include
     private Long id;
 
-    @ToString.Include
     private String firstName;
 
-    @ToString.Include
     private String lastName;
 
-    @Column(nullable = false, unique = true, length = 100)
+    private boolean isEnabled;
+
+    private String passwordDigest;
+
     @Email
-    @ToString.Include
+    @Column(nullable = false, unique = true, length = 100)
     private String email;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
@@ -44,11 +44,6 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
-
-    @ToString.Include
-    private boolean isEnabled;
-
-    private String passwordDigest;
 
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)

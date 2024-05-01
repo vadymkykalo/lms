@@ -1,3 +1,14 @@
+server:
+  port: 8080
+
+logging:
+  level:
+    root: INFO
+    org:
+      springframework:
+        # web: DEBUG
+        security: DEBUG
+
 spring:
   application:
     name: lms
@@ -33,12 +44,3 @@ spring:
 rsa:
   private-key: classpath:certs/private.pem
   public-key: classpath:certs/public.pem
-
-logging:
-  level:
-    root: INFO
-    org:
-      springframework:
-        # web: DEBUG
-        security: DEBUG
-
