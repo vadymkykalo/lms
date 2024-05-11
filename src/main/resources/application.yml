@@ -6,8 +6,9 @@ logging:
     root: INFO
     org:
       springframework:
-        # web: DEBUG
-        security: DEBUG
+        # web: INFO
+        security: INFO
+        cache: DEBUG
 
 spring:
   application:
@@ -18,7 +19,6 @@ spring:
     user:
       name: lms
       password: 82580bab-c552-4946-b017-43a6f072e265
-
   datasource:
     url: jdbc:postgresql://lms_postgres:5432/lmstest
     username: lmsuser
@@ -40,6 +40,12 @@ spring:
 
   jackson:
     time-zone: Europe/Kiev
+
+  data:
+    redis:
+      port: 6379
+      database: 0
+      host: lms_redis
 
 rsa:
   private-key: classpath:certs/private.pem

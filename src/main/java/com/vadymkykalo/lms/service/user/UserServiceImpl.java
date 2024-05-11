@@ -7,10 +7,10 @@ import com.vadymkykalo.lms.entity.Role;
 import com.vadymkykalo.lms.entity.User;
 import com.vadymkykalo.lms.exception.UserAlreadyExistException;
 import com.vadymkykalo.lms.exception.ResourceNotFoundException;
-import com.vadymkykalo.lms.repository.RoleRepository;
 import com.vadymkykalo.lms.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -19,12 +19,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
+    private final RoleService roleService;
     private final PasswordEncoder passwordEncoder;
 
     @Override
@@ -45,7 +46,7 @@ public class UserServiceImpl implements UserService {
             throw new UserAlreadyExistException("There is an account with that email address: " + registrationDto.getEmail());
         }
 
-        Role userRole = roleRepository.findByName(Role.RoleName.USER)
+        Role userRole = roleService.getRole(Role.RoleName.USER)
                 .orElseThrow(() -> new ResourceNotFoundException("Default role not found"));
 
         return userRepository.saveAndFlush(User.builder()
