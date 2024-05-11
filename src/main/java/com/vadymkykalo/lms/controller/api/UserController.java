@@ -1,110 +1,59 @@
 package com.vadymkykalo.lms.controller.api;
 
-import com.vadymkykalo.lms.dto.UserCreateDto;
+import com.vadymkykalo.lms.dto.UserRegistrationDto;
 import com.vadymkykalo.lms.dto.UserDto;
 import com.vadymkykalo.lms.dto.UserUpdateDto;
-import com.vadymkykalo.lms.entity.User;
 import com.vadymkykalo.lms.exception.ResourceNotFoundException;
-import com.vadymkykalo.lms.repository.UserRepository;
+import com.vadymkykalo.lms.service.user.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/users")
 public class UserController {
 
-    private final UserRepository repository;
-    private final PasswordEncoder passwordEncoder;
+    private final UserService userService;
 
-    @GetMapping("/users")
-    ResponseEntity<List<UserDto>> index() {
-        List<User> users = repository.findAll();
-        List<UserDto> result = users.stream()
-                .map(user -> UserDto.builder()
-                        .id(user.getId())
-                        .username(user.getUsername())
-                        .password(user.getPassword())
-                        .firstName(user.getFirstName())
-                        .lastName(user.getLastName())
-                        .isEnabled(user.isEnabled())
-                        .build())
-                .toList();
+    @GetMapping("")
+    ResponseEntity<List<UserDto>> getAllUsers() {
+        List<UserDto> users = userService.get();
         return ResponseEntity.ok()
                 .header("X-Total-Count", String.valueOf(users.size()))
-                .body(result);
+                .body(users);
     }
 
     @Operation(summary = "Get user by ID", description = "Retrieves a user by their ID")
-    @GetMapping("/users/{id}")
+    @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    UserDto show(@PathVariable Long id) {
-        User user = repository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Not Found"));
+    ResponseEntity<UserDto> getUser(@PathVariable Long id) {
+        UserDto user = userService.get(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
 
-        return UserDto.builder()
-                .id(user.getId())
-                .username(user.getUsername())
-                .password(user.getPassword())
-                .firstName(user.getFirstName())
-                .lastName(user.getLastName())
-                .isEnabled(user.isEnabled())
-                .build();
+        return ResponseEntity.ok().body(user);
     }
 
-    @PostMapping("/users")
+    @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
-    UserDto create(@Valid @RequestBody UserCreateDto userData) {
-        User user = User.builder()
-                .lastName(userData.getLastName())
-                .firstName(userData.getFirstName())
-                .email(userData.getEmail())
-                .passwordDigest(passwordEncoder.encode(userData.getPassword()))
-                .isEnabled(true)
-                .build();
-
-        User updateUser = repository.saveAndFlush(user);
-
-        return UserDto.builder()
-                .id(updateUser.getId())
-                .username(updateUser.getUsername())
-                .password(updateUser.getPassword())
-                .firstName(updateUser.getFirstName())
-                .lastName(updateUser.getLastName())
-                .isEnabled(updateUser.isEnabled())
-                .build();
+    ResponseEntity<UserDto> registerUser(@Valid @RequestBody UserRegistrationDto userData) {
+        return ResponseEntity.ok().body(userService.mapToDto(userService.register(userData)));
     }
 
-    @PutMapping("/users/{id}")
+    @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    UserDto update(@RequestBody UserUpdateDto userData, @PathVariable Long id) {
-        User user = repository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Not Found"));
-
-        user.setFirstName(userData.getFirstName());
-
-        User updateUser = repository.saveAndFlush(user);
-
-        return UserDto.builder()
-                .id(updateUser.getId())
-                .username(updateUser.getUsername())
-                .password(updateUser.getPassword())
-                .firstName(updateUser.getFirstName())
-                .lastName(updateUser.getLastName())
-                .isEnabled(updateUser.isEnabled())
-                .build();
+    ResponseEntity<UserDto> update(@PathVariable Long id, @RequestBody UserUpdateDto userData) {
+        return ResponseEntity.ok().body(userService.update(id, userData));
     }
 
-    @DeleteMapping("/users/{id}")
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void destroy(@PathVariable Long id) {
-        repository.deleteById(id);
+        userService.delete(id);
     }
 }

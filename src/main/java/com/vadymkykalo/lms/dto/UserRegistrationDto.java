@@ -6,23 +6,20 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
-@Setter
-@Getter
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
+@Data
 @Schema(description = "Data transfer object for user creation")
-public class UserCreateDto {
-    @NotBlank
+public class UserRegistrationDto {
+    @NotBlank(message = "First name is required")
     private String firstName;
 
-    @NotBlank
+    @NotBlank(message = "Last name is required")
     private String lastName;
 
     @Email
-    @Schema(description = "Email of the user", example = "john.doe@example.com")
+    @NotBlank(message = "Email is required")
     private String email;
 
-    @Size(min = 3, max = 100)
+    @NotBlank(message = "Password is required")
+    @Size(min = 6, message = "Password must be at least 6 characters")
     private String password;
 }

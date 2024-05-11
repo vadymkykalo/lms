@@ -83,17 +83,20 @@ public class SecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/v1/login").permitAll()
                         .requestMatchers("/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/v1/hello").hasAuthority("SCOPE_ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/api/v1/users").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/v1/users").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/v1/users/{id}").permitAll()
-                        .requestMatchers(HttpMethod.PUT, "/api/v1/users/{id}").permitAll()
-                        .requestMatchers(HttpMethod.DELETE, "/api/v1/users/{id}").permitAll()
                         .requestMatchers("/").permitAll()
                         .requestMatchers("/index.html").permitAll()
                         .requestMatchers("/assets/**", "/static/**").permitAll()
+
+                        .requestMatchers("/api/v1/login").permitAll()
+
+                        .requestMatchers(HttpMethod.GET, "/api/v1/users").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/v1/users/register").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/users/{id}").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/api/v1/users/{id}").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/api/v1/users/{id}").permitAll()
+
+                        .requestMatchers(HttpMethod.GET, "/api/v1/hello").hasAuthority("SCOPE_ADMIN")
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
