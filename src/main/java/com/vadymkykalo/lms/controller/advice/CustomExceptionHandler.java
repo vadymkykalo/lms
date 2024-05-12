@@ -19,14 +19,14 @@ public class CustomExceptionHandler {
 
     @ExceptionHandler(ResourceNotFoundException.class)
      public ResponseEntity<String> handleResourceNotFoundException(ResourceNotFoundException ex) {
-        log.error("Resource not found: " + ex.getMessage(), ex);
+        log.error("Resource not found: {}", ex.getMessage(), ex);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
      }
 
     @ExceptionHandler(NoHandlerFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<ErrorResponse> handleNotFound(Exception ex) {
-        log.error("Handler not found: " + ex.getMessage(), ex);
+        log.error("Handler not found: {}", ex.getMessage(), ex);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ErrorResponse.builder()
                 .status(HttpStatus.NOT_FOUND.value())
                 .message(ex.getMessage())
@@ -38,7 +38,7 @@ public class CustomExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleAllExceptions(Exception ex, WebRequest request) {
-        log.error("An unexpected error occurred: " + ex.getMessage(), ex);
+        log.error("An unexpected error occurred: {}", ex.getMessage(), ex);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ErrorResponse.builder()
                 .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
                 .message(ex.getMessage())
