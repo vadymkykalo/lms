@@ -22,7 +22,7 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("")
-    ResponseEntity<List<UserDto>> getAllUsers() {
+    ResponseEntity<List<UserDto>> getAll() {
         List<UserDto> users = userService.get();
         return ResponseEntity.ok()
                 .header("X-Total-Count", String.valueOf(users.size()))
@@ -32,16 +32,16 @@ public class UserController {
     @Operation(summary = "Get user by ID", description = "Retrieves a user by their ID")
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    ResponseEntity<UserDto> getUser(@PathVariable Long id) {
+    ResponseEntity<UserDto> get(@PathVariable Long id) {
         UserDto user = userService.get(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
 
         return ResponseEntity.ok().body(user);
     }
 
-    @PostMapping("/register")
+    @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
-    ResponseEntity<UserDto> registerUser(@Valid @RequestBody UserRegistrationDto userData) {
+    ResponseEntity<UserDto> create(@Valid @RequestBody UserRegistrationDto userData) {
         return ResponseEntity.ok().body(userService.mapToDto(userService.register(userData)));
     }
 
@@ -53,7 +53,7 @@ public class UserController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void destroy(@PathVariable Long id) {
+    void delete(@PathVariable Long id) {
         userService.delete(id);
     }
 }

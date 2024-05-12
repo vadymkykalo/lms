@@ -7,6 +7,7 @@ import com.vadymkykalo.lms.service.TokenService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +23,7 @@ public class AuthenticationController {
 
     @PostMapping("/login")
     @ResponseStatus(HttpStatus.OK)
-    public String create(@RequestBody @Valid AuthRequest authRequest) {
+    public ResponseEntity<String> create(@RequestBody @Valid AuthRequest authRequest) {
 
         var authentication = new UsernamePasswordAuthenticationToken(
                 authRequest.getUsername(),
@@ -33,6 +34,6 @@ public class AuthenticationController {
 
         CustomUserDetails user = (CustomUserDetails) customUsrDetailsService.loadUserByUsername(authRequest.getUsername());
 
-        return tokenService.generateAccessToken(user);
+        return ResponseEntity.status(HttpStatus.OK).body(tokenService.generateAccessToken(user));
     }
 }
