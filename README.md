@@ -1,6 +1,5 @@
-# Pet Project (lms)
 
-# LMS Application
+# LMS Application (Pet Project)
 
 ## Description
 LMS Application using Spring Boot, PostgreSQL, and Redis. The entire application infrastructure is containerized using Docker.
@@ -17,7 +16,7 @@ To work with this project, you will need:
 
 1. **Clone the repository**
    ```bash
-   git clone <repository-url>
+   git clone git@github.com:vadymkykalo/lms.git
    cd lms
 
 2. **Start Docker containers**

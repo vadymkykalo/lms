@@ -12,6 +12,7 @@ public interface RoleRepository extends JpaRepository<Role, Long> {
 
     Optional<Role> findByName(Role.RoleName name);
 
+    // todo move cache into Role service
     @CacheEvict(value = CacheConstants.ROLES_CACHE, allEntries = true)
     @Override
     <S extends Role> @NotNull S save(@NotNull S entity);
