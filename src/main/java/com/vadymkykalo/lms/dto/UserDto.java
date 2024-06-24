@@ -1,6 +1,7 @@
 package com.vadymkykalo.lms.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import org.springdoc.core.annotations.ParameterObject;
 
@@ -12,7 +13,8 @@ import java.util.Set;
 @Schema(description = "Data transfer object for user mapping")
 public class UserDto {
 
-    @Schema(description = "Unique identifier of the User", example = "1", required = true)
+    @NotBlank(message = "Id is required")
+    @Schema(description = "Unique identifier of the User", example = "1")
     private Long id;
 
     @Schema(description = "Username of the User, typically the email", example = "user@example.com")

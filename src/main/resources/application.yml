@@ -23,7 +23,6 @@ spring:
     url: jdbc:postgresql://lms_postgres:5432/lmstest
     username: lmsuser
     password: lmsroot
-
   jpa:
     open-in-view: false
     show-sql: true
@@ -34,18 +33,20 @@ spring:
         jdbc:
           time_zone: Europe/Kiev
         format_sql: true
-
   liquibase:
     change-log: classpath:/db/changelog/changelog-master.xml
-
   jackson:
     time-zone: Europe/Kiev
-
   data:
     redis:
       port: 6379
       database: 0
       host: lms_redis
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: lms
+      auto-offset-reset: earliest
 
 rsa:
   private-key: classpath:certs/private.pem

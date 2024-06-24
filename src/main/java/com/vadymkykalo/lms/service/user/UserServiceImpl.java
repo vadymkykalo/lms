@@ -24,8 +24,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    private final UserRepository userRepository;
     private final RoleService roleService;
+    private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Override
