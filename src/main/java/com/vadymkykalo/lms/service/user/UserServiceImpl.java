@@ -1,7 +1,7 @@
 package com.vadymkykalo.lms.service.user;
 
 import com.vadymkykalo.lms.dto.UserDto;
-import com.vadymkykalo.lms.dto.UserRegistrationDto;
+import com.vadymkykalo.lms.dto.UserCreateDto;
 import com.vadymkykalo.lms.dto.UserUpdateDto;
 import com.vadymkykalo.lms.entity.Role;
 import com.vadymkykalo.lms.entity.User;
@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public User register(UserRegistrationDto registrationDto) {
+    public User register(UserCreateDto registrationDto) {
         if (isExistEmail(registrationDto.getEmail())) {
             throw new UserAlreadyExistException("There is an account with that email address: " + registrationDto.getEmail());
         }

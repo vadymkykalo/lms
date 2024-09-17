@@ -1,6 +1,6 @@
 package com.vadymkykalo.lms.controller.api;
 
-import com.vadymkykalo.lms.dto.UserRegistrationDto;
+import com.vadymkykalo.lms.dto.UserCreateDto;
 import com.vadymkykalo.lms.dto.UserDto;
 import com.vadymkykalo.lms.dto.UserUpdateDto;
 import com.vadymkykalo.lms.exception.ResourceNotFoundException;
@@ -41,7 +41,7 @@ public class UserController {
 
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
-    ResponseEntity<UserDto> create(@Valid @RequestBody UserRegistrationDto userData) {
+    ResponseEntity<UserDto> create(@Valid @RequestBody UserCreateDto userData) {
         return ResponseEntity.ok().body(userService.mapToDto(userService.register(userData)));
     }
 

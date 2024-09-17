@@ -8,7 +8,7 @@ import lombok.*;
 
 @Data
 @Schema(description = "Data transfer object for user creation")
-public class UserRegistrationDto {
+public class UserCreateDto {
     @NotBlank(message = "First name is required")
     private String firstName;
 

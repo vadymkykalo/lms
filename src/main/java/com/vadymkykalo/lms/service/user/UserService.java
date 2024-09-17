@@ -1,7 +1,7 @@
 package com.vadymkykalo.lms.service.user;
 
 import com.vadymkykalo.lms.dto.UserDto;
-import com.vadymkykalo.lms.dto.UserRegistrationDto;
+import com.vadymkykalo.lms.dto.UserCreateDto;
 import com.vadymkykalo.lms.dto.UserUpdateDto;
 import com.vadymkykalo.lms.entity.User;
 
@@ -12,7 +12,7 @@ public interface UserService {
 
     UserDto mapToDto(User user);
 
-    User register(UserRegistrationDto registrationDto);
+    User register(UserCreateDto registrationDto);
 
     Optional<UserDto> get(Long id);
 
