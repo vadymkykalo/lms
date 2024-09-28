@@ -14,13 +14,15 @@ public interface UserService {
 
     User register(UserCreateDto registrationDto);
 
-    Optional<UserDto> get(Long id);
+    Optional<UserDto> getById(Long id);
 
-    List<UserDto> get();
+    List<UserDto> getAll();
 
     UserDto update(Long id, UserUpdateDto userDto);
 
     boolean isExistEmail(String email);
+
+    boolean isExistUserById(Long id);
 
     void delete(Long id);
 }

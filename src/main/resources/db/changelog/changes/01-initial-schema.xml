@@ -93,7 +93,7 @@
             <column name="first_name" value="admin"/>
             <column name="last_name" value="admin"/>
             <column name="email" value="admin@example.com"/>
-            <!-- password test123 -->
+            <!-- login admin@example.com password test123 -->
             <column name="password_digest" valueComputed="'$2a$10$MgwNTchUSyeazhgUIPbKje.KizXPf8K8F5BpsykX0mRdZ61EqxJqe'"/>
             <column name="is_enabled" valueBoolean="true"/>
             <column name="created_at" valueComputed="CURRENT_TIMESTAMP"/>

@@ -34,6 +34,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public boolean isExistUserById(Long id) {
+        return userRepository.existsById(id);
+    }
+
+    @Override
     @Transactional
     public void delete(Long id) {
         userRepository.deleteById(id);
@@ -60,12 +65,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<UserDto> get(Long id) {
+    public Optional<UserDto> getById(Long id) {
         return userRepository.findById(id).map(this::mapToDto);
     }
 
     @Override
-    public List<UserDto> get() {
+    public List<UserDto> getAll() {
         return userRepository.findAll().stream().map(this::mapToDto).collect(Collectors.toList());
     }
 
@@ -88,6 +93,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto mapToDto(User user) {
         return UserDto.builder()
+                .id(user.getId())
                 .username(user.getUsername())
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())

@@ -1,4 +1,4 @@
-package com.vadymkykalo.lms.component;
+package com.vadymkykalo.lms.service.auth;
 
 import com.vadymkykalo.lms.entity.Role;
 import com.vadymkykalo.lms.entity.User;
@@ -59,6 +59,6 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return this.user.isEnabled();
+        return user.isEnabled();
     }
 }

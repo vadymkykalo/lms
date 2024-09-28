@@ -7,9 +7,10 @@ import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 import com.vadymkykalo.lms.component.RsaKeyProperties;
-import com.vadymkykalo.lms.service.CustomUsrDetailsService;
-import com.vadymkykalo.lms.service.TokenService;
+import com.vadymkykalo.lms.repository.UserRepository;
+import com.vadymkykalo.lms.service.auth.CustomUsrDetailsService;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -37,6 +38,9 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableMethodSecurity
 public class SecurityConfig {
 
+    @Autowired
+    private UserRepository userRepository;
+
     private final RsaKeyProperties rsaKeys;
 
     @Bean
@@ -46,7 +50,7 @@ public class SecurityConfig {
 
     @Bean
     public UserDetailsService customUserDetailsService() {
-        return new CustomUsrDetailsService();
+        return new CustomUsrDetailsService(userRepository);
     }
 
     @Bean
@@ -74,21 +78,16 @@ public class SecurityConfig {
     }
 
     @Bean
-    TokenService tokenService() {
-        return new TokenService(jwtEncoder());
-    }
-
-    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**").permitAll()
-                        .requestMatchers("/").permitAll()
-                        .requestMatchers("/index.html").permitAll()
+                        .requestMatchers("/", "/index.html").permitAll()
                         .requestMatchers("/assets/**", "/static/**").permitAll()
 
-                        .requestMatchers("/api/v1/login").permitAll()
+                        .requestMatchers("/api/v1/auth").permitAll()
+                        .requestMatchers("/api/v1/refresh-token").hasAnyAuthority("SCOPE_USER", "SCOPE_ADMIN")
 
                         .requestMatchers(HttpMethod.GET, "/api/v1/users").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/users").permitAll()
