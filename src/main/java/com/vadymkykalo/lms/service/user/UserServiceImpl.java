@@ -98,7 +98,7 @@ public class UserServiceImpl implements UserService {
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
                 .isEnabled(user.isEnabled())
-                .roles(user.getRoles().stream().map(role -> role.getName().name()).collect(Collectors.toSet()))
+                .roles(user.getRoles().stream().map(Role::getName).collect(Collectors.toSet()))
                 .build();
     }
 }

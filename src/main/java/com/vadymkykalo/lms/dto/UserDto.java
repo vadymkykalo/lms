@@ -1,5 +1,6 @@
 package com.vadymkykalo.lms.dto;
 
+import com.vadymkykalo.lms.entity.Role;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
@@ -30,5 +31,5 @@ public class UserDto {
     private Boolean isEnabled;
 
     @Schema(description = "Set of roles assigned to the User", example = "[\"ADMIN\", \"USER\"]")
-    private Set<String> roles;
+    private Set<Role.RoleName> roles;
 }
