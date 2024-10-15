@@ -17,6 +17,9 @@ import org.springframework.kafka.core.*;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 
 import org.springframework.kafka.support.serializer.JsonSerializer;
+import org.springframework.scheduling.concurrent.ConcurrentTaskExecutor;
+
+import java.util.concurrent.Executors;
 
 @EnableKafka
 @Configuration
@@ -71,9 +74,20 @@ public class KafkaConfig {
             ConsumerFactory<String, Object> consumerFactory
     ) {
         ConcurrentKafkaListenerContainerFactory<String, Object> factory = new ConcurrentKafkaListenerContainerFactory<>();
+
+        int concurrency = 1;
+
         factory.setConsumerFactory(consumerFactory);
-        factory.setConcurrency(3);
-        factory.getContainerProperties().setPollTimeout(3000);
+        factory.setConcurrency(concurrency);
+        factory.setBatchListener(true);
+        factory.getContainerProperties().setIdleBetweenPolls(1_000);
+        factory.getContainerProperties().setPollTimeout(1_000);
+
+        var executor = Executors.newFixedThreadPool(concurrency, task -> new Thread(task, "kafka-task"));
+        var listenerTaskExecutor = new ConcurrentTaskExecutor(executor);
+
+        factory.getContainerProperties().setListenerTaskExecutor(listenerTaskExecutor);
+
         return factory;
     }
 }
