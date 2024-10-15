@@ -1,64 +1,77 @@
 package com.vadymkykalo.lms.configuration;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
+import org.springframework.kafka.config.TopicBuilder;
 import org.springframework.kafka.core.*;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 
-import org.springframework.kafka.support.serializer.ErrorHandlingDeserializer;
 import org.springframework.kafka.support.serializer.JsonSerializer;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @EnableKafka
 @Configuration
 public class KafkaConfig {
 
-    @Value("${spring.kafka.bootstrap-servers}")
-    private String bootstrapServers;
-
-    @Value("${spring.kafka.consumer.group-id}")
-    private String consumerGroupId;
+    @Value("${app.kafka.topic}")
+    private String topicName;
 
     @Bean
-    public ProducerFactory<String, Object> producerFactory() {
-        Map<String, Object> configProps = new HashMap<>();
-        configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
-        configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-        configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
-        return new DefaultKafkaProducerFactory<>(configProps);
+    public ProducerFactory<String, Object> producerFactory(KafkaProperties kafkaProperties, ObjectMapper objectMapper) {
+
+        var props = kafkaProperties.buildProducerProperties();
+
+        props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+        props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
+
+        var kafkaProducerFactory = new DefaultKafkaProducerFactory<String, Object>(props);
+        kafkaProducerFactory.setValueSerializer(new JsonSerializer<>(objectMapper));
+
+        return kafkaProducerFactory;
     }
 
     @Bean
-    public KafkaTemplate<String, Object> kafkaTemplate() {
-        return new KafkaTemplate<>(producerFactory());
+    public KafkaTemplate<String, Object> kafkaTemplate(ProducerFactory<String, Object> producerFactory) {
+        return new KafkaTemplate<>(producerFactory);
     }
 
     @Bean
-    public ConsumerFactory<String, Object> consumerFactory() {
-        Map<String, Object> props = new HashMap<>();
-        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
-        props.put(ConsumerConfig.GROUP_ID_CONFIG, consumerGroupId);
-        props.put(ErrorHandlingDeserializer.VALUE_DESERIALIZER_CLASS, JsonDeserializer.class.getName());
-        return new DefaultKafkaConsumerFactory<>(
-                props,
-                new StringDeserializer(),
-                new ErrorHandlingDeserializer<>(new JsonDeserializer<>(Object.class))
-        );
+    public NewTopic topic() {
+        return TopicBuilder.name(topicName).partitions(1).replicas(1).build();
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, Object> kafkaListenerContainerFactory() {
+    public ConsumerFactory<String, Object> consumerFactory(KafkaProperties kafkaProperties, ObjectMapper objectMapper) {
+
+        var props = kafkaProperties.buildConsumerProperties();
+
+        props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
+
+        props.put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, 100);
+        props.put(ConsumerConfig.MAX_POLL_INTERVAL_MS_CONFIG, 5_000);
+
+        var kafkaConsumerFactory = new DefaultKafkaConsumerFactory<String, Object>(props);
+        kafkaConsumerFactory.setValueDeserializer(new JsonDeserializer<>(objectMapper));
+
+        return kafkaConsumerFactory;
+    }
+
+    @Bean
+    public ConcurrentKafkaListenerContainerFactory<String, Object> kafkaListenerContainerFactory(
+            ConsumerFactory<String, Object> consumerFactory
+    ) {
         ConcurrentKafkaListenerContainerFactory<String, Object> factory = new ConcurrentKafkaListenerContainerFactory<>();
-        factory.setConsumerFactory(consumerFactory());
+        factory.setConsumerFactory(consumerFactory);
         factory.setConcurrency(3);
         factory.getContainerProperties().setPollTimeout(3000);
         return factory;

@@ -30,8 +30,8 @@ public class CacheConfig {
     }
 
     @Bean
-    public RedisSerializer<Object> redisSerializer() {
-        return new GenericJackson2JsonRedisSerializer(redisObjectMapper());
+    public RedisSerializer<Object> redisSerializer(ObjectMapper redisObjectMapper) {
+        return new GenericJackson2JsonRedisSerializer(redisObjectMapper);
     }
 
     @Bean

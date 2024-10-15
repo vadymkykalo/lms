@@ -90,8 +90,12 @@
             <version>RELEASE</version>
             <scope>compile</scope>
         </dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
 
-    </dependencies>
+	</dependencies>
 
 	<build>
 		<plugins>
