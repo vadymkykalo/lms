@@ -30,7 +30,6 @@ public class KafkaConfig {
 
     @Bean
     public ProducerFactory<String, Object> producerFactory(KafkaProperties kafkaProperties, ObjectMapper objectMapper) {
-
         var props = kafkaProperties.buildProducerProperties();
 
         props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
@@ -54,7 +53,6 @@ public class KafkaConfig {
 
     @Bean
     public ConsumerFactory<String, Object> consumerFactory(KafkaProperties kafkaProperties, ObjectMapper objectMapper) {
-
         var props = kafkaProperties.buildConsumerProperties();
 
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
