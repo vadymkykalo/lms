@@ -1,6 +1,7 @@
 package com.vadymkykalo.lms.controller.api;
 
 import com.vadymkykalo.lms.dto.ApiResponse;
+import com.vadymkykalo.lms.exception.InvalidTokenException;
 import com.vadymkykalo.lms.service.auth.CustomUserDetails;
 import com.vadymkykalo.lms.dto.AuthRequest;
 import com.vadymkykalo.lms.dto.AuthResponse;
@@ -62,7 +63,7 @@ public class AuthenticationController {
     public ResponseEntity<?> refreshToken(@RequestBody String refreshToken) {
         try {
             if (!tokenService.validateToken(refreshToken)) {
-                throw new RuntimeException("Invalid refresh token");
+                throw new InvalidTokenException("Invalid refresh token");
             }
 
             String username = tokenService.parseToken(refreshToken);
