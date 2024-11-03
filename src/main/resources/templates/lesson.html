@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="uk" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{base}">
 <head>
-  <title th:text="'Урок: ' + ${lessonName}">Урок</title>
+    <title th:text="'Урок: ' + ${lessonName}">Урок</title>
 
 </head>
 <body>
 <div layout:fragment="content">
-  <h1 th:text="'Урок: ' + ${lessonName}">Урок</h1>
-  <div th:utext="${content}">Завантаження...</div> <!-- Lesson Content with HTML from Markdown -->
+    <h1 th:text="'Урок: ' + ${lessonName}">Урок</h1>
+    <div th:utext="${content}">Завантаження...</div> <!-- Lesson Content with HTML from Markdown -->
 </div>
 
 </body>

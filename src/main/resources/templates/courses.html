@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html lang="uk" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{base}">
 <head>
-  <title>Список курсів</title>
+    <title>Список курсів</title>
 </head>
 <body>
 <div layout:fragment="content">
-  <h1>Список курсів</h1>
-  <ul>
-    <li th:each="course : ${courses}">
-      <a th:href="@{'/courses/' + ${course.name}}" th:text="${course.name}"></a>
-    </li>
-  </ul>
+    <h1>Список курсів</h1>
+    <ul>
+        <li th:each="course : ${courses}">
+            <a th:href="@{'/courses/' + ${course.name}}" th:text="${course.name}"></a>
+        </li>
+    </ul>
 </div>
 </body>
 </html>
