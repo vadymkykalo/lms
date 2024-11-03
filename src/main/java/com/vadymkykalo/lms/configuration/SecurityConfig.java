@@ -84,7 +84,10 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**").permitAll()
                         .requestMatchers("/", "/index.html").permitAll()
-                        .requestMatchers("/assets/**", "/static/**").permitAll()
+                        .requestMatchers("/assets/**", "/static/**", "/css/**", "/js/**").permitAll()
+
+                        //todo tmp
+                        .requestMatchers("/courses/**").permitAll()
 
                         .requestMatchers("/api/v1/auth").permitAll()
                         .requestMatchers("/api/v1/refresh-token").hasAnyAuthority("SCOPE_USER", "SCOPE_ADMIN")

@@ -105,4 +105,34 @@
         </insert>
     </changeSet>
 
+    <changeSet id="create_table_courses" author="vkykalo">
+        <createTable tableName="courses">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="text">
+                <constraints nullable="true"/>
+            </column>
+            <column name="is_active" type="boolean" defaultValueBoolean="true">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP WITH TIME ZONE" defaultValueComputed="now()">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="add_java_course" author="vkykalo">
+        <insert tableName="courses">
+            <column name="name" value="java"/>
+            <column name="is_active" valueBoolean="true"/>
+        </insert>
+    </changeSet>
+
 </databaseChangeLog>

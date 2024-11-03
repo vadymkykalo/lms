@@ -12,6 +12,9 @@ spring:
   application:
     name: lms
 
+  thymeleaf:
+    encoding: UTF-8
+
   kafka:
     bootstrap-servers: kafka:9092
     consumer:
@@ -55,6 +58,12 @@ spring:
       port: 6379
       database: 0
       host: lms_redis
+  web:
+    locale: uk_UA
+
+markdown:
+  courses:
+    path: "src/main/resources/markdown/courses"
 
 rsa:
   private-key: classpath:certs/private.pem
@@ -73,3 +82,5 @@ app:
   env: dev
   kafka:
     topic: "demo-topic"
+
+
