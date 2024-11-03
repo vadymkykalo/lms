@@ -1,29 +1,16 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="uk" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{base}">
 <head>
-  <meta charset="UTF-8">
-  <title>Список курсов</title>
-  <link rel="stylesheet" href="/css/styles.css">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <title>Список курсів</title>
 </head>
 <body>
-
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="/">Курсы</a>
-</nav>
-
-<div class="container mt-4">
-  <h1>Список курсов</h1>
+<div layout:fragment="content">
+  <h1>Список курсів</h1>
   <ul>
     <li th:each="course : ${courses}">
-      <!-- Используем поле course.name для ссылки и текста -->
-      <a th:href="@{'/courses/' + ${course.name}}" th:text="${course.name}">Java</a>
+      <a th:href="@{'/courses/' + ${course.name}}" th:text="${course.name}"></a>
     </li>
   </ul>
 </div>
-
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

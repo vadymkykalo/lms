@@ -1,36 +1,13 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="uk" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{base}">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title th:text="${title}">Курс по Backend-разработке</title>
-    <link rel="stylesheet" href="/css/styles.css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>Курс з Backend-розробки</title>
 </head>
 <body>
-
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="/">Курс по Backend</a>
-    <div class="collapse navbar-collapse">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="/about">О курсе</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/courses">Курсы</a> <!-- Изменено на /courses -->
-            </li>
-        </ul>
-    </div>
-</nav>
-
-<div class="container mt-4">
-    <h1>Добро пожаловать на курс по Backend-разработке!</h1>
-    <p>Этот курс научит вас основам и продвинутым аспектам разработки серверной части на Spring Boot. </p>
-    <a href="/courses" class="btn btn-primary">Начать обучение</a> <!-- Изменено на /courses -->
+<div layout:fragment="content">
+    <h1>Ласкаво просимо на курс з Backend-розробки!</h1>
+    <p>Цей курс навчить вас основам і просунутим аспектам розробки серверної частини на Spring Boot.</p>
+    <a href="/courses" class="btn btn-primary">Розпочати навчання</a>
 </div>
-
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
